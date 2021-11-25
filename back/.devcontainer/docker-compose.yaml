@@ -1,0 +1,16 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    env_file: dev.env
+  bookclub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: dev.env
+    volumes:
+      # This is where VS Code should expect to find your project's source code and the value of "workspaceFolder" in .devcontainer/devcontainer.json
+      - ..:/workspace:cached
+    command: /bin/sh -c "while sleep 100000; do :; done"

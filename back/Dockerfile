@@ -1,8 +1,11 @@
-FROM python:3.9.9-slim
+FROM mcr.microsoft.com/vscode/devcontainers/python:3.9
 
 EXPOSE 8080
 
-RUN pip install --update pip && \
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc
+
+RUN pip install --upgrade pip && \
     pip install pipenv
 
 COPY Pipfile* ./

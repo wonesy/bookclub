@@ -13,18 +13,18 @@ create table if not exists members (
     last_login timestamp
 );
 
-create table if not exist genres (
+create table if not exists genres (
     id serial primary key,
     name varchar(63) unique not null
-)
+);
 
 create table if not exists books (
     id serial primary key,
     title varchar(127),
     author varchar(127),
     genre_id int not null,
-    foreign key (genre_id) references genre (id)
-)
+    foreign key (genre_id) references genres (id)
+);
 
 create table if not exists completions (
     id serial primary key,
@@ -35,4 +35,4 @@ create table if not exists completions (
     foreign key (member_id) references members (id),
     foreign key (book_id) references books (id),
     check (score between 0 and 10)
-)
+);

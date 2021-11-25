@@ -2,11 +2,9 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.202.3/containers/python-3
 {
 	"name": "Bookclub",
-	"build": {
-		"dockerfile": "Dockerfile",
-		"context": "..",
-		"args": {}
-	},
+	"dockerComposeFile": "docker-compose.yaml",
+	"service": "bookclub",
+	"workspaceFolder": "/workspace",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
