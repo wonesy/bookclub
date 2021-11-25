@@ -1,7 +1,12 @@
-FROM mcr.microsoft.com/vscode/devcontainers/python:3.10
+FROM mcr.microsoft.com/vscode/devcontainers/python:3.9
 
 RUN sudo apt-get update && \
-    apt-get install -y vim
+    apt-get install -y --no-install-recommends \
+        wget \
+        cmake \
+        make \
+        g++ \
+        vim \
 
 # [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
 # COPY requirements.txt /tmp/pip-tmp/
