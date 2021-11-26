@@ -1,0 +1,27 @@
+GET http://localhost:8000/members HTTP/1.1
+
+###
+
+GET http://localhost:8000/members/wonesy HTTP/1.1
+
+###
+
+POST http://localhost:8000/members HTTP/1.1
+content-type: application/json
+
+{
+    "username": "wonesy",
+    "first_name": "Cameron",
+    "last_name": "Jones",
+    "email": "test@test.com",
+    "password": "fakepassword"
+}
+
+###
+
+PUT http://localhost:8000/members/camomile HTTP/1.1
+content-type: application/json
+
+{
+    "username": "wonesy"
+}

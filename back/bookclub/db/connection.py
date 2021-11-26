@@ -14,7 +14,7 @@ except KeyError as ke:
     logger.error(f"Environment variables must be defined: {ke}")
     sys.exit(1)
 
-url = f"postgres://{DATABASE_USER}:{DATABASE_PASS}@db:5432/{DATABASE_NAME}"
+url = f"postgres://{DATABASE_USER}:{DATABASE_PASS}@bkdb:5432/{DATABASE_NAME}"
 
 database = Database(url)
 

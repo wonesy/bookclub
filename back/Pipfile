@@ -9,6 +9,7 @@ yoyo-migrations = "*"
 asyncio = "*"
 psycopg2 = "*"
 databases = {extras = ["postgresql"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
 

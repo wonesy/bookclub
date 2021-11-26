@@ -5,12 +5,13 @@ from typing import Optional
 from fastapi import FastAPI
 from bookclub.db import init_db, database
 
-from bookclub.routers import members
+from bookclub.routers import members, auth
 
 app = FastAPI()
 
 for router in [
-    members.router
+    members.router,
+    auth.router
 ]:
     app.include_router(router)
 
