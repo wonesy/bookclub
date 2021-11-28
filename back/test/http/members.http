@@ -1,4 +1,5 @@
 GET http://localhost:8000/members HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2MzgwNDkyMjAsInR5cGUiOiJhY2Nlc3MifQ.TWt0zNwyktc1wK6kCBvhNynV6KkHTdVIhd6TnykqPsI
 
 ###
 

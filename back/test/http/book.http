@@ -1,0 +1,19 @@
+GET http://localhost:8000/books HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYwODUyODYsInR5cGUiOiJhY2Nlc3MifQ.pFG8WJf1wXHF-czR1OyB985OYnAEVaveirBEWgIV_Ec
+
+###
+
+GET http://localhost:8000/books/5091-patrick-rothfuss-the-name-of-the-wind HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYwODUyODYsInR5cGUiOiJhY2Nlc3MifQ.pFG8WJf1wXHF-czR1OyB985OYnAEVaveirBEWgIV_Ec
+
+###
+
+POST http://localhost:8000/books HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYwODUyODYsInR5cGUiOiJhY2Nlc3MifQ.pFG8WJf1wXHF-czR1OyB985OYnAEVaveirBEWgIV_Ec
+content-type: application/json
+
+{
+    "author": "Patrick Rothfuss",
+    "title": "The Name of the Wind",
+    "genre": "Fantasy"
+}

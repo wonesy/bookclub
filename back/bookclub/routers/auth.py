@@ -1,16 +1,16 @@
 from fastapi import APIRouter, HTTPException, status
-from bookclub.auth.password import get_password_hash, verify_password
+from bookclub.auth.password import verify_password
+from bookclub.auth.token import create_tokens
 from bookclub.db import database
 from bookclub.db.queries import GET_MEMBER_BY_USERNAME
-from bookclub.models.auth import LoginDetails
-from bookclub.routers.members import get_member_by_username
+from bookclub.models.auth import LoginDetails, TokenPair
 
 router = APIRouter(
     prefix="/auth",
     tags=["auth"]
 )
 
-@router.post("/login")
+@router.post("/login", response_model=TokenPair)
 async def login(login_details: LoginDetails):
     row = await database.fetch_one(GET_MEMBER_BY_USERNAME, {"username": login_details.username})
     if row is None:
@@ -22,4 +22,20 @@ async def login(login_details: LoginDetails):
     except (ValueError, TypeError):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Username and password do not match")
 
-    return {"status", "ok"}
+    tokens = create_tokens({
+        "sub": login_details.username,
+    })
+
+    return tokens.dict()
+
+
+# TODO
+@router.get("/logout")
+async def logout():
+    pass
+
+
+# TODO
+@router.get("/refresh")
+async def refresh_tokens():
+    pass

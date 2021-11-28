@@ -20,9 +20,10 @@ create table if not exists genres (
 
 create table if not exists books (
     id serial primary key,
-    title varchar(127),
-    author varchar(127),
+    title varchar(127) not null,
+    author varchar(127) not null,
     genre_id int not null,
+    slug varchar(255) unique not null,
     foreign key (genre_id) references genres (id)
 );
 

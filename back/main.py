@@ -1,17 +1,16 @@
-"""Main"""
-import logging
-from typing import Optional
-
+"""Bookclub main entrypoint"""
 from fastapi import FastAPI
 from bookclub.db import init_db, database
 
-from bookclub.routers import members, auth
+from bookclub.routers import books, members, auth, genres
 
 app = FastAPI()
 
 for router in [
     members.router,
-    auth.router
+    auth.router,
+    genres.router,
+    books.router
 ]:
     app.include_router(router)
 
@@ -22,14 +21,3 @@ async def startup_event():
 @app.on_event("shutdown")
 async def shutdown_event():
     await database.disconnect()
-
-@app.get("/")
-def get_root():
-    """Root"""
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
-    """Get items"""
-    return {"item_id": item_id, "q":q}
