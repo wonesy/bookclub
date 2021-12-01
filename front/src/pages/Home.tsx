@@ -1,8 +1,7 @@
-import { useAxiosClient } from '../auth/hooks/use_axios_client'
-import { useMembers } from '../state/hooks/use_member'
+import { useMembers } from '../api/use_members'
 
 export default function Home() {
-    const x = useMembers()
+    const members = useMembers()
 
     return (
         <>

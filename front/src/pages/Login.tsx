@@ -1,10 +1,11 @@
-import { useAuth } from '../auth/AuthProvider'
+import { useLogin } from '../auth/hooks/use_login'
 
 export default function Login() {
-    const auth = useAuth()
+    const login = useLogin()
+
     return (
         <div>
-            <button onClick={() => auth?.login('wonesy', 'fakepassword')}>Login</button>
+            <button onClick={async () => await login('wonesy', 'fakepassword')}>Login</button>
         </div>
     )
 }

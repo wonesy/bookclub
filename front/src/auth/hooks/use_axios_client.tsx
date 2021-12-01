@@ -1,22 +1,17 @@
 import axios from 'axios'
-import { useCallback, useEffect } from 'react'
+import { useTokens } from '../../state/hooks/use_tokens'
+
 export function useAxiosClient() {
-    const tokens = auth?.tokens
+    const { tokens } = useTokens()
 
     const client = axios.create({
         baseURL: 'http://localhost:8000',
-        timeout: 1000
+        timeout: 3000,
+        headers: {
+            'content-type': 'application/json',
+            authorization: tokens?.accessToken ? `Bearer ${tokens.accessToken}` : ''
+        }
     })
-
-    useEffect(
-        useCallback(() => {
-            if (auth?.tokens !== undefined) {
-                client.defaults.headers.common[
-                    'Authorization'
-                ] = `Bearer ${auth.tokens.accessToken}`
-            }
-        }, [auth?.tokens])
-    )
 
     return { client }
 }

@@ -4,5 +4,9 @@ export type TokenPair = {
 }
 
 export type AuthState = {
-    tokens: TokenPair
+    tokens: TokenPair | undefined
+}
+
+export const emptyAuthState: AuthState = {
+    tokens: undefined
 }

@@ -1,8 +1,10 @@
 import axios from 'axios'
 import { useMutation } from 'react-query'
-import { LOCAL_STORAGE_TOKEN_KEY } from '..'
+import { useTokens } from '../../state/hooks/use_tokens'
 
 export function useLogin() {
+    const { setTokens } = useTokens()
+
     const loginRequest = async (username: string, password: string): Promise<any> => {
         const { data } = await axios.post('http://localhost:8000/auth/login', {
             username,
@@ -15,9 +17,11 @@ export function useLogin() {
         async ({ username, password }: { username: string; password: string }) =>
             loginRequest(username, password),
         {
-            onSuccess: data => {
-                console.log(data)
-                window.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, JSON.stringify(data))
+            onSuccess: tokenResponse => {
+                setTokens({
+                    accessToken: tokenResponse['access_token'],
+                    refreshToken: tokenResponse['refresh_token']
+                })
             },
             onError: (err: any) => {
                 if (err.response) {
@@ -30,5 +34,5 @@ export function useLogin() {
     const login = async (username: string, password: string) =>
         loginMutation.mutateAsync({ username, password })
 
-    return { login }
+    return login
 }
