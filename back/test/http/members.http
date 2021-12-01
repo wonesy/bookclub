@@ -3,7 +3,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiL
 
 ###
 
-GET http://localhost:8000/members/wonesy HTTP/1.1
+GET http://localhost:8000/members/me HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYzOTAxODEsInR5cGUiOiJhY2Nlc3MifQ.Yo8YFoRG37sbbSGtUD-3bU6-Jg8TwpRJmN6O0g3qQY0
 
 ###
 

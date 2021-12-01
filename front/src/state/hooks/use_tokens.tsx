@@ -1,5 +1,5 @@
 import { TokenPair } from '../auth'
-import { loadTokens, storeTokens } from '../local_storage'
+import { loadTokens, storeTokens } from '../../util/local_storage'
 import { useStore } from '../store'
 
 export function useTokens() {

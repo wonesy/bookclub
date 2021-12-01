@@ -1,11 +1,19 @@
-import { useLogin } from '../auth/hooks/use_login'
+import { useAuth } from '../context/auth_context'
 
 export default function Login() {
-    const login = useLogin()
+    const auth = useAuth()
+
+    console.log(auth.user)
 
     return (
         <div>
-            <button onClick={async () => await login('wonesy', 'fakepassword')}>Login</button>
+            <button
+                onClick={async () =>
+                    await auth.login!({ username: 'wonesy', password: 'fakepassword' })
+                }
+            >
+                Login
+            </button>
         </div>
     )
 }

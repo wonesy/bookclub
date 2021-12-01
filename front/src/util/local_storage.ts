@@ -1,4 +1,4 @@
-import { TokenPair } from './auth'
+import { TokenPair } from '../state/auth'
 
 export const LOCAL_STORAGE_TOKEN_KEY = 'auth_tokens'
 

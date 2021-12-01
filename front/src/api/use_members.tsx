@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query'
-import { useAxiosClient } from '../auth/hooks/use_axios_client'
 import { Member } from '../state/member'
 import { useStore } from '../state/store'
+import { apiClient } from './api_client'
 
 const toMember = (data: Record<string, any>): Member => {
     return {
@@ -12,11 +12,10 @@ const toMember = (data: Record<string, any>): Member => {
 }
 
 export function useMembers() {
-    const { client } = useAxiosClient()
     const store = useStore()
 
     const getMembersRequest = async () => {
-        const { data } = await client.get('/members')
+        const data = await apiClient('/members')
         return (data || []).map(toMember)
     }
 

@@ -1,17 +1,10 @@
-import produce from 'immer'
 import create, { SetState, State, StateCreator } from 'zustand'
 import { devtools } from 'zustand/middleware'
+import immerState from '../util/immer'
 import { AuthState, TokenPair } from './auth'
 import { emptyAuthState } from './auth'
-import { loadTokens, storeTokens } from './local_storage'
 import { emptyMemberState, Member, MemberState } from './member'
 
-const immer =
-    <T extends State, U extends State>(
-        config: StateCreator<T, (fn: (draft: T) => void) => void, U>
-    ): StateCreator<T, SetState<T>, U> =>
-    (set, get, api) =>
-        config(fn => set(produce(fn) as (state: T) => T), get, api)
 
 export type AppState = {
     authState: AuthState
@@ -35,13 +28,12 @@ export const emptyAppState: {
 
 export const useStore = create<AppState>(
     devtools(
-        immer((set, get) => ({
+        immerState((set, get) => ({
             ...emptyAppState,
 
             // auth
             setTokenPair: (t: TokenPair | undefined) =>
                 set(state => {
-                    storeTokens(t)
                     state.authState.tokens = t
                 }),
             getTokenPair: () => get().authState.tokens,

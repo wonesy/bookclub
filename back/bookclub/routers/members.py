@@ -9,11 +9,12 @@ from bookclub.models.member import Member, NewMember
 from bookclub.db import database
 from bookclub.db.queries import GET_ALL_MEMBERS, GET_MEMBER_BY_USERNAME, INSERT_MEMBER, UPDATE_MEMBER
 
+reserved_usernames = ['admin', 'me']
+
 router = APIRouter(
     prefix="/members",
     tags=["members"],
 )
-
 
 @router.get("")
 async def get_members(response_model=List[Member], _: DecodedToken = Depends(get_token_from_header)):
@@ -24,6 +25,9 @@ async def get_members(response_model=List[Member], _: DecodedToken = Depends(get
 
 @router.post("", response_model=Member)
 async def create_member(new_member: NewMember):
+    if new_member.username in reserved_usernames:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Username is reserved")
+
     hashed_pw = get_password_hash(new_member.password)
     try:
         async with database.transaction():
@@ -41,6 +45,12 @@ async def create_member(new_member: NewMember):
         )
     return Member(**row)
 
+@router.get("/me")
+async def get_me(token: DecodedToken = Depends(get_token_from_header)):
+    row = await database.fetch_one(GET_MEMBER_BY_USERNAME, {"username": token.sub})
+    if row is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No such member: {username}")
+    return Member(**row)
 
 @router.get("/{username}", response_model=Member)
 async def get_member_by_username(username: str, _: DecodedToken = Depends(get_token_from_header)):
@@ -48,7 +58,6 @@ async def get_member_by_username(username: str, _: DecodedToken = Depends(get_to
     if row is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No such member: {username}")
     return Member(**row)
-
 
 @router.put("/{username}", response_model=Member)
 async def update_member_by_username(
