@@ -5,13 +5,25 @@ import { useAsync } from '../util/hooks/use_async'
 type AuthContextProps = {
     user?: string
     login?: (creds: { username: string; password: string }) => void
+    logout?: () => void
+    error?: any
     children?: React.ReactNode
 }
 
 const AuthContext = React.createContext<AuthContextProps | undefined>(undefined)
 
 function AuthProvider(props: AuthContextProps) {
-    const { data: user, run, setData, isSuccess, isError, isIdle, isLoading } = useAsync()
+    const {
+        data: user,
+        run,
+        error,
+        setData,
+        setError,
+        isSuccess,
+        isError,
+        isIdle,
+        isLoading
+    } = useAsync()
 
     React.useEffect(() => {
         // get user from token in local storage, if present
@@ -21,16 +33,29 @@ function AuthProvider(props: AuthContextProps) {
 
     const login = React.useCallback(
         (creds: { username: string; password: string }) => {
-            auth.login(creds).then(user => setData(user))
+            auth.login(creds)
+                .then(user => {
+                    setData(user)
+                    setError(null)
+                })
+                .catch(setError)
         },
         [setData]
     )
 
-    const value = React.useMemo(() => ({ user, login }), [login, user])
+    const logout = React.useCallback(() => {
+        auth.logout().finally(() => {
+            setData(null)
+            setError(null)
+        })
+    }, [setData, setError])
+
+    const value = React.useMemo(
+        () => ({ user, login, logout, error }),
+        [login, logout, user, error]
+    )
 
     // if loading... spinner
-
-    // if error... full page error
 
     // if success...
     return <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>

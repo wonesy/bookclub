@@ -7,7 +7,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@elastic/eui": "^42.0.0",
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/icons-material": "^5.2.0",
+    "@mui/material": "^5.2.2",
     "axios": "^0.24.0",
     "immer": "^9.0.7",
     "jotai": "^1.4.5",

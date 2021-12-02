@@ -1,27 +1,22 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { Routes, Route } from 'react-router-dom'
-import Layout from './components/Layout'
+import BookClubRoutes from './BookClubRoutes'
+
 import { AuthProvider } from './context/auth_context'
-import Home from './pages/Home'
-import Login from './pages/Login'
 
 const queryClient = new QueryClient()
+const theme = createTheme()
 
 function App() {
     return (
-        <ChakraProvider>
-            <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+            <ThemeProvider theme={theme}>
                 <AuthProvider>
-                    <Routes>
-                        <Route path="/" element={<Layout />}>
-                            <Route index element={<Home />} />
-                            <Route path="login" element={<Login />} />
-                        </Route>
-                    </Routes>
+                    <CssBaseline />
+                    <BookClubRoutes />
                 </AuthProvider>
-            </QueryClientProvider>
-        </ChakraProvider>
+            </ThemeProvider>
+        </QueryClientProvider>
     )
 }
 
