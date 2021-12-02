@@ -1,3 +1,4 @@
+import { ChakraProvider } from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
@@ -9,16 +10,18 @@ const queryClient = new QueryClient()
 
 function App() {
     return (
-        <QueryClientProvider client={queryClient}>
-            <AuthProvider>
-                <Routes>
-                    <Route path="/" element={<Layout />}>
-                        <Route index element={<Home />} />
-                        <Route path="login" element={<Login />} />
-                    </Route>
-                </Routes>
-            </AuthProvider>
-        </QueryClientProvider>
+        <ChakraProvider>
+            <QueryClientProvider client={queryClient}>
+                <AuthProvider>
+                    <Routes>
+                        <Route path="/" element={<Layout />}>
+                            <Route index element={<Home />} />
+                            <Route path="login" element={<Login />} />
+                        </Route>
+                    </Routes>
+                </AuthProvider>
+            </QueryClientProvider>
+        </ChakraProvider>
     )
 }
 

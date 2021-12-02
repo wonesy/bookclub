@@ -28,7 +28,16 @@ async function getToken() {
     return window.localStorage.getItem(localStorageKey)
 }
 
-function handleUserResponse(resp: LoginResponse) {
+function checkLoggedIn() {
+    const token = window.localStorage.getItem(localStorageKey)
+    if (token) {
+        const decoded: DecodedToken = jwt_decode(token)
+        return decoded.sub
+    }
+    return null
+}
+
+async function handleUserResponse(resp: LoginResponse) {
     window.localStorage.setItem(localStorageKey, resp.access_token)
     const decoded: DecodedToken = jwt_decode(resp.access_token)
     return decoded.sub
@@ -67,4 +76,4 @@ async function client(endpoint: string, data: any) {
     })
 }
 
-export { client, getToken, login, register, logout, localStorageKey }
+export { client, getToken, login, register, logout, checkLoggedIn, localStorageKey }

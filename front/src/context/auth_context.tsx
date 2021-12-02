@@ -1,21 +1,6 @@
 import * as React from 'react'
-import { apiClient } from '../api/api_client'
 import * as auth from '../auth-provider'
-import { Member } from '../state/member'
 import { useAsync } from '../util/hooks/use_async'
-import { toMember } from '../util/treats'
-
-async function initAppData() {
-    const token = await auth.getToken()
-
-    if (token) {
-        const data = apiClient('members/me', undefined, token)
-        console.log(data)
-        return data
-    }
-
-    return null
-}
 
 type AuthContextProps = {
     user?: string
@@ -29,9 +14,10 @@ function AuthProvider(props: AuthContextProps) {
     const { data: user, run, setData, isSuccess, isError, isIdle, isLoading } = useAsync()
 
     React.useEffect(() => {
-        const initAppPromise = initAppData()
-        run(initAppPromise, toMember)
-    }, [user])
+        // get user from token in local storage, if present
+        // do once per mount
+        setData(auth.checkLoggedIn())
+    }, [])
 
     const login = React.useCallback(
         (creds: { username: string; password: string }) => {
