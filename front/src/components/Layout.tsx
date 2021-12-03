@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar'
 import {
     Drawer as MuiDrawer,
@@ -13,14 +13,11 @@ import {
     List,
     ListItem,
     ListItemIcon,
-    ListItemText,
-    Paper,
-    Container,
-    Grid,
-    ListItemButton
+    ListItemText
 } from '@mui/material'
 import { ChevronLeft, Menu, Notifications, MenuBook, EmojiEvents } from '@mui/icons-material'
 import { Box } from '@mui/system'
+import { useAuth } from '../context/auth_context'
 
 export type RouteDefinition = {
     display: string
@@ -141,14 +138,12 @@ function DashboardContent() {
                 <Divider />
                 <List>
                     {sideBarRoutes.map(r => (
-                        <ListItem button>
+                        <ListItem button key={r.link}>
                             <ListItemIcon>{r.icon}</ListItemIcon>
                             <ListItemText primary={r.display} />
                         </ListItem>
                     ))}
                 </List>
-                <Divider />
-                {/* <List>{secondaryListItems}</List> */}
             </Drawer>
             <Box
                 component="main"
@@ -169,6 +164,16 @@ function DashboardContent() {
     )
 }
 
-export default function Dashboard() {
+export default function Layout() {
+    const { user } = useAuth()
+    const navigate = useNavigate()
+
+    React.useEffect(
+        React.useCallback(() => {
+            if (!user || !user.username) navigate('/login')
+        }, [user]),
+        []
+    )
+
     return <DashboardContent />
 }

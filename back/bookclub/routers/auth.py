@@ -28,6 +28,8 @@ async def login(login_details: LoginDetails):
 
     return tokens.dict()
 
+@router.post("/invite")
+
 
 # TODO
 @router.get("/logout")

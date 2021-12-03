@@ -16,7 +16,8 @@ content-type: application/json
     "first_name": "Cameron",
     "last_name": "Jones",
     "email": "test@test.com",
-    "password": "fakepassword"
+    "password": "fakepassword",
+    "registration_token": "placeholder"
 }
 
 ###

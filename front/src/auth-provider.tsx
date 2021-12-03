@@ -32,7 +32,7 @@ function checkLoggedIn() {
     const token = window.localStorage.getItem(localStorageKey)
     if (token) {
         const decoded: DecodedToken = jwt_decode(token)
-        return decoded.sub
+        return { username: decoded.sub, accessToken: token, refreshToken: null }
     }
     return null
 }
@@ -40,7 +40,11 @@ function checkLoggedIn() {
 async function handleUserResponse(resp: LoginResponse) {
     window.localStorage.setItem(localStorageKey, resp.access_token)
     const decoded: DecodedToken = jwt_decode(resp.access_token)
-    return decoded.sub
+    return {
+        username: decoded.sub,
+        accessToken: resp.access_token,
+        refreshToken: resp.refresh_token
+    }
 }
 
 function login({ username, password }: Credentials) {

@@ -14,6 +14,7 @@ class Member(BaseModel):
 class NewMember(BaseModel):
     username: str
     password: str
+    registration_token: str
     first_name: Optional[str]
     last_name: Optional[str]
     email: Optional[str]

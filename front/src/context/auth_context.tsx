@@ -1,9 +1,10 @@
 import * as React from 'react'
+import { apiClient } from '../api/api_client'
 import * as auth from '../auth-provider'
 import { useAsync } from '../util/hooks/use_async'
 
 type AuthContextProps = {
-    user?: string
+    user?: { accessToken: string; refreshToken?: string; username: string }
     login?: (creds: { username: string; password: string }) => void
     logout?: () => void
     error?: any
@@ -69,12 +70,10 @@ function useAuth() {
     return context
 }
 
-// function useClient() {
-//     const accessToken = auth.getToken()
-//     return React.useCallback(
-//         async (endpoint, data) => apiClient(endpoint, data, await accessToken),
-//         [accessToken]
-//     )
-// }
+function useAuthClient() {
+    const { user } = useAuth()
+    const token = user?.accessToken
+    return React.useCallback((endpoint, data) => apiClient(endpoint, data, token), [token])
+}
 
-export { AuthProvider, useAuth }
+export { AuthProvider, useAuth, useAuthClient }

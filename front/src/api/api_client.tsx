@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios'
 import * as auth from '../auth-provider'
 
 const apiURL = 'http://localhost:8000'
@@ -8,7 +8,7 @@ async function apiClient(
     data?: Record<string, any>,
     token?: string,
     customHeaders?: Record<string, string>
-) {
+): Promise<AxiosResponse<any, any>> {
     const config: AxiosRequestConfig = {
         url: `${apiURL}/${endpoint}`,
         data: data,
@@ -23,7 +23,7 @@ async function apiClient(
     return axios
         .request(config)
         .then(async response => {
-            response.data
+            return response.data
         })
         .catch(async error => {
             console.log(error.response)

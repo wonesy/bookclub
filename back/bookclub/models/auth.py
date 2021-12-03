@@ -16,3 +16,7 @@ class DecodedToken(BaseModel):
     sub: str
     exp: int
     type: str
+
+
+class RegistrationToken(BaseModel):
+    token: str

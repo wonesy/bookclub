@@ -3,6 +3,7 @@ import { Avatar, Button, Container, Grid, TextField, Typography } from '@mui/mat
 import { Box } from '@mui/system'
 import React from 'react'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../context/auth_context'
 
 export default function Login() {
@@ -90,6 +91,11 @@ export default function Login() {
                     <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                         Login
                     </Button>
+                    <Grid container justifyContent="flex-end">
+                        <Grid item>
+                            <Link to="/register">Have a registration code? Register here.</Link>
+                        </Grid>
+                    </Grid>
                 </Box>
             </Box>
         </Container>

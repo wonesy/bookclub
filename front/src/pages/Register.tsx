@@ -1,4 +1,4 @@
-import { LockOpenOutlined, LockOutlined } from '@mui/icons-material'
+import { LockOutlined } from '@mui/icons-material'
 import {
     Avatar,
     Button,
@@ -6,16 +6,13 @@ import {
     Container,
     FormControlLabel,
     Grid,
-    Link,
     TextField,
     Typography
 } from '@mui/material'
 import { Box } from '@mui/system'
-import { useAuth } from '../context/auth_context'
+import { Link } from 'react-router-dom'
 
 export default function Register() {
-    const auth = useAuth()
-
     return (
         <Container component="main" maxWidth="xs">
             <Box
@@ -88,9 +85,7 @@ export default function Register() {
                     </Button>
                     <Grid container justifyContent="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
-                                Already have an account? Sign in
-                            </Link>
+                            <Link to="/login">Already have an account? Sign in</Link>
                         </Grid>
                     </Grid>
                 </Box>

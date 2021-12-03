@@ -62,3 +62,31 @@ FROM books b
 INNER JOIN genres g on b.genre_id = g.id
 WHERE b.slug = :slug
 """
+
+#############################################
+#                                           #
+#                  CLUBS                    #
+#                                           #
+#############################################
+
+GET_ALL_CLUBS = """
+SELECT id, name, slug
+FROM clubs
+"""
+
+GET_CLUB_BY_SLUG = """
+SELECT id, name, slug
+FROM clubs
+WHERE slug = :slug
+"""
+
+GET_CLUB_BY_ID = """
+SELECT id, name, slug
+FROM clubs
+WHERE id = :id
+"""
+
+INSERT_CLUB = """
+INSERT INTO clubs (name, slug)
+VALUES (:name, :slug)
+"""

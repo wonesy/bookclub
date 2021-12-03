@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Layout from './components/Layout'
+import Register from './pages/Register'
 
 export default function BookClubRoutes() {
     return (
@@ -10,6 +11,7 @@ export default function BookClubRoutes() {
                 <Route index element={<Home />} />
             </Route>
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
         </Routes>
     )
 }
