@@ -3,7 +3,7 @@ from asyncpg.exceptions import UniqueViolationError
 
 from bookclub.auth.dependencies import get_token_from_header
 from bookclub.db import database
-from bookclub.db.queries import GET_ALL_CLUBS, INSERT_CLUB
+from bookclub.db.queries.clubs import GET_ALL_CLUBS, INSERT_CLUB
 from bookclub.models.clubs import Club, NewClub
 from bookclub.slugs.gen import gen_club_slug
 

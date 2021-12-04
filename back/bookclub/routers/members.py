@@ -1,13 +1,19 @@
+import logging
+from datetime import datetime
 from typing import List
 from fastapi import APIRouter, HTTPException, status, Depends
 from asyncpg.exceptions import UniqueViolationError
-from bookclub.auth.dependencies import get_token_from_header
+from bookclub.db.queries.registration import DELETE_TOKEN, GET_REGISTRATION_TOKEN
+from jose import jwt
 
+from bookclub.auth.dependencies import decode_registration_token, get_token_from_header
 from bookclub.auth.password import get_password_hash
 from bookclub.models.auth import DecodedToken
 from bookclub.models.member import Member, NewMember
 from bookclub.db import database
-from bookclub.db.queries import GET_ALL_MEMBERS, GET_MEMBER_BY_USERNAME, INSERT_MEMBER, UPDATE_MEMBER
+from bookclub.db.queries.members import GET_ALL_MEMBERS, GET_MEMBER_BY_USERNAME, INSERT_MEMBER, UPDATE_MEMBER
+
+logger = logging.getLogger("uvicorn.default")
 
 reserved_usernames = ['admin', 'me']
 
@@ -28,9 +34,27 @@ async def create_member(new_member: NewMember):
     if new_member.username in reserved_usernames:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Username is reserved")
 
-    hashed_pw = get_password_hash(new_member.password)
+    # validate registration token
     try:
+        reg_token = decode_registration_token(new_member.registration_token)
+
+        row = await database.fetch_one(GET_REGISTRATION_TOKEN, {"token": new_member.registration_token})
+        if row is None:
+           raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Registration token has already been used")
+
+        expiration_date = datetime.utcfromtimestamp(reg_token.exp)
+        logger.info(expiration_date)
+        if datetime.now() >= expiration_date:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Registration token has expired")
+    except jwt.JWTError as e:
+        logger.error(e)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid registration token")
+
+
+    try:
+        hashed_pw = get_password_hash(new_member.password)
         async with database.transaction():
+
             row = await database.fetch_one(INSERT_MEMBER, {
                 "username": new_member.username,
                 "password": str(hashed_pw),
@@ -38,6 +62,7 @@ async def create_member(new_member: NewMember):
                 "last_name": new_member.last_name,
                 "email": new_member.email,
             })
+            await database.execute(DELETE_TOKEN, {"token": new_member.registration_token})
     except UniqueViolationError:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,

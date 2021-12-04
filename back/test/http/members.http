@@ -12,12 +12,12 @@ POST http://localhost:8000/members HTTP/1.1
 content-type: application/json
 
 {
-    "username": "wonesy",
-    "first_name": "Cameron",
-    "last_name": "Jones",
+    "username": "hobbit",
+    "first_name": "Mike",
+    "last_name": "Johson",
     "email": "test@test.com",
-    "password": "fakepassword",
-    "registration_token": "placeholder"
+    "registration_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHViIjoxLCJzdWIiOiJ3b25lc3kiLCJleHAiOjE3NDY2MjA1MDJ9.drAco3EukyUEPEG90TTFV6dsFAiXvhMS-buXVYnv8B8",
+    "password": "pass"
 }
 
 ###

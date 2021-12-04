@@ -1,9 +1,14 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
+from asyncpg.exceptions import ForeignKeyViolationError, NotNullViolationError
+
+from bookclub.auth.dependencies import get_token_from_header
 from bookclub.auth.password import verify_password
-from bookclub.auth.token import create_tokens
+from bookclub.auth.token import create_registration_token, create_tokens
 from bookclub.db import database
-from bookclub.db.queries import GET_MEMBER_BY_USERNAME
-from bookclub.models.auth import LoginDetails, TokenPair
+from bookclub.db.queries.members import GET_MEMBER_BY_USERNAME
+from bookclub.db.queries.registration import INSERT_REGISTRATION_TOKEN
+from bookclub.models.auth import DecodedToken, LoginDetails, TokenPair
+from bookclub.models.invitation import Invitation, InvitationResponse
 
 router = APIRouter(
     prefix="/auth",
@@ -28,7 +33,26 @@ async def login(login_details: LoginDetails):
 
     return tokens.dict()
 
-@router.post("/invite")
+
+@router.post("/invite", response_model=InvitationResponse)
+async def create_invite_token(invitation: Invitation, token: DecodedToken = Depends(get_token_from_header)):
+    username = token.sub
+    d = invitation.dict()
+    d.update({"sub": username})
+    reg_token = create_registration_token(d)
+
+    print(d)
+
+    try:
+        async with database.transaction():
+            await database.fetch_one(INSERT_REGISTRATION_TOKEN, {
+                "token": reg_token,
+                "username": username
+            })
+    except (NotNullViolationError, ForeignKeyViolationError):
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Something went wrong with the request")
+
+    return InvitationResponse(club=invitation.club, token=reg_token)
 
 
 # TODO

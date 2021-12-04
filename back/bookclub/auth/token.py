@@ -1,8 +1,8 @@
 from fastapi import Depends, status, HTTPException
-from jose import JWTError, jwt
+from jose import jwt
 from fastapi.security import OAuth2PasswordBearer
 from datetime import datetime, timedelta
-from bookclub.db.queries import GET_MEMBER_BY_USERNAME
+from bookclub.db.queries.members import GET_MEMBER_BY_USERNAME
 from bookclub.models.auth import TokenPair
 from bookclub.db import database
 from bookclub.models.member import Member
@@ -13,8 +13,16 @@ SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 300000
 REFRESH_TOKEN_EXPIRE_MINUTES = 1800000
+REGISTRATION_TOKEN_EXPIRE_MINUTES = 10080 # one week
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+
+def create_registration_token(data: dict) -> str:
+    reg = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
+    reg.update({"exp": expire})
+    return jwt.encode(reg, SECRET_KEY, algorithm=ALGORITHM)
+
 
 def create_tokens(data: dict) -> TokenPair:
     access_encode = data.copy()

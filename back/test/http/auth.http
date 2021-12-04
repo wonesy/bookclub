@@ -5,3 +5,13 @@ Content-Type: application/json
     "username": "wonesy",
     "password": "fakepassword"
 }
+
+###
+
+POST http://localhost:8000/auth/invite HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYwODUyODYsInR5cGUiOiJhY2Nlc3MifQ.pFG8WJf1wXHF-czR1OyB985OYnAEVaveirBEWgIV_Ec
+Content-Type: application/json
+
+{
+    "club": 1
+}

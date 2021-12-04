@@ -27,18 +27,6 @@ create table if not exists books (
     foreign key (genre_id) references genres (id)
 );
 
-create table if not exists completions (
-    id serial primary key,
-    member_id int not null,
-    book_choice_id int not null,
-    score numeric not null,
-    comment varchar(128),
-    completed_on timestamp default now(),
-    foreign key (member_id) references members (id),
-    foreign key (book_choice_id) references book_choices (id),
-    check (score between 0 and 10)
-);
-
 create table if not exists clubs (
     id serial primary key,
     name varchar(63) unique not null,
@@ -74,8 +62,17 @@ create table if not exists registration_tokens (
     id serial primary key,
     token varchar (256) unique not null,
     issuer int not null,
-    club int not null,
-    expires_on timestamp not null,
     foreign key (issuer) references members (id)
-    foreign key (club) references clubs (id),
+);
+
+create table if not exists completions (
+    id serial primary key,
+    member_id int not null,
+    book_choice_id int not null,
+    score numeric not null,
+    comment varchar(128),
+    completed_on timestamp default now(),
+    foreign key (member_id) references members (id),
+    foreign key (book_choice_id) references book_choices (id),
+    check (score between 0 and 10)
 );

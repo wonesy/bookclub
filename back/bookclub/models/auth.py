@@ -20,3 +20,9 @@ class DecodedToken(BaseModel):
 
 class RegistrationToken(BaseModel):
     token: str
+
+
+class DecodedRegistrationToken(BaseModel):
+    sub: str
+    exp: int
+    club: int

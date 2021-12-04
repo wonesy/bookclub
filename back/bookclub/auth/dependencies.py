@@ -4,7 +4,7 @@ from fastapi import Header, HTTPException, status
 from jose import jwt
 
 from bookclub.auth.token import ALGORITHM, SECRET_KEY
-from bookclub.models.auth import DecodedToken
+from bookclub.models.auth import DecodedRegistrationToken, DecodedToken
 
 logger = logging.getLogger("uvicorn.default")
 
@@ -17,3 +17,9 @@ async def get_token_from_header(authorization: Optional[str] = Header(None)) -> 
     except (ValueError, jwt.JWTError, jwt.JWTClaimsError, jwt.ExpiredSignatureError):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized, invalid token")
     return DecodedToken(**decoded_token)
+
+
+def decode_registration_token(token: str) -> DecodedRegistrationToken:
+    decoded = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    return DecodedRegistrationToken(**decoded)
+

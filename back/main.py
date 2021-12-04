@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from bookclub.db import init_db, database
 
-from bookclub.routers import books, members, auth, genres
+from bookclub.routers import books, members, auth, genres, clubs
 
 app = FastAPI()
 
@@ -11,7 +11,8 @@ for router in [
     members.router,
     auth.router,
     genres.router,
-    books.router
+    books.router,
+    clubs.router
 ]:
     app.include_router(router)
 

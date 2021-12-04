@@ -3,7 +3,7 @@ from asyncpg.exceptions import UniqueViolationError
 
 from bookclub.auth.dependencies import get_token_from_header
 from bookclub.db import database
-from bookclub.db.queries import GET_ALL_GENRES, INSERT_GENRE
+from bookclub.db.queries.genres import GET_ALL_GENRES, INSERT_GENRE
 from bookclub.models.genre import Genre
 
 router = APIRouter(

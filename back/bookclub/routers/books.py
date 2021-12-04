@@ -3,7 +3,7 @@ from asyncpg.exceptions import UniqueViolationError
 
 from bookclub.auth.dependencies import get_token_from_header
 from bookclub.db import database
-from bookclub.db.queries import GET_ALL_BOOKS, GET_BOOK_BY_SLUG, INSERT_BOOK, INSERT_GENRE
+from bookclub.db.queries.books import GET_ALL_BOOKS, GET_BOOK_BY_SLUG, INSERT_BOOK
 from bookclub.models.book import Book, NewBook
 from bookclub.slugs.gen import gen_book_slug
 
@@ -38,7 +38,7 @@ async def create_book(new_book: NewBook):
             detail=f"Book already exists"
         )
 
-@router.get("/{book_slug}", response_model=Book)
+@router.get("/{book_slug}")
 async def get_book(book_slug: str):
     row = await database.fetch_one(GET_BOOK_BY_SLUG, {"slug": book_slug})
     if row is None:
