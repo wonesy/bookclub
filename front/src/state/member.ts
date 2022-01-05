@@ -1,7 +1,11 @@
+import { Club } from './clubs'
+
 export type Member = {
     username: string
     firstName?: string
     lastName?: string
+    email?: string
+    clubs: Club[]
 }
 
 export type MemberState = {

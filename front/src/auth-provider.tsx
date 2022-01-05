@@ -28,7 +28,7 @@ async function getToken() {
     return window.localStorage.getItem(localStorageKey)
 }
 
-function checkLoggedIn() {
+async function checkLoggedIn() {
     const token = window.localStorage.getItem(localStorageKey)
     if (token) {
         const decoded: DecodedToken = jwt_decode(token)

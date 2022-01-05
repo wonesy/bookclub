@@ -18,6 +18,7 @@ import {
 import { ChevronLeft, Menu, Notifications, MenuBook, EmojiEvents } from '@mui/icons-material'
 import { Box } from '@mui/system'
 import { useAuth } from '../context/auth_context'
+import useMe from '../state/hooks/use_me'
 
 export type RouteDefinition = {
     display: string
@@ -165,15 +166,15 @@ function DashboardContent() {
 }
 
 export default function Layout() {
-    const { user } = useAuth()
+    const { data, isFetched } = useMe()
     const navigate = useNavigate()
 
     React.useEffect(
         React.useCallback(() => {
-            if (!user || !user.username) navigate('/login')
-        }, [user]),
+            if (isFetched && (!data || !data.username)) navigate('/login')
+        }, [data, isFetched]),
         []
     )
 
-    return user?.username ? <DashboardContent /> : null
+    return data?.username ? <DashboardContent /> : null
 }

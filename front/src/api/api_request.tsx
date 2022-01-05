@@ -3,7 +3,7 @@ import * as auth from '../auth-provider'
 
 const apiURL = 'http://localhost:8000'
 
-async function apiClient(
+async function apiRequest(
     endpoint: string,
     data?: Record<string, any>,
     token?: string,
@@ -20,20 +20,7 @@ async function apiClient(
         }
     }
 
-    return axios
-        .request(config)
-        .then(async response => {
-            return response.data
-        })
-        .catch(async error => {
-            console.log(error.response)
-            if (error.response.status === 401) {
-                await auth.logout()
-                // refresh page
-                window.location.assign(window.location.toString())
-                return Promise.reject({ message: 'Please re-authenticate' })
-            }
-        })
+    return await axios.request(config)
 }
 
-export { apiClient }
+export { apiRequest }

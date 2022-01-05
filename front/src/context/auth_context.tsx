@@ -1,10 +1,12 @@
 import * as React from 'react'
-import { apiClient } from '../api/api_client'
+import { apiRequest } from '../api/api_request'
 import * as auth from '../auth-provider'
 import { useAsync } from '../util/hooks/use_async'
 
 type AuthContextProps = {
     user?: { accessToken: string; refreshToken?: string; username: string }
+    isLoading?: boolean
+    status?: string
     login?: (creds: { username: string; password: string }) => void
     logout?: () => void
     error?: any
@@ -16,6 +18,7 @@ const AuthContext = React.createContext<AuthContextProps | undefined>(undefined)
 function AuthProvider(props: AuthContextProps) {
     const {
         data: user,
+        status,
         run,
         error,
         setData,
@@ -29,7 +32,8 @@ function AuthProvider(props: AuthContextProps) {
     React.useEffect(() => {
         // get user from token in local storage, if present
         // do once per mount
-        setData(auth.checkLoggedIn())
+        // setData(auth.checkLoggedIn())
+        run(auth.checkLoggedIn())
     }, [])
 
     const login = React.useCallback(
@@ -52,11 +56,13 @@ function AuthProvider(props: AuthContextProps) {
     }, [setData, setError])
 
     const value = React.useMemo(
-        () => ({ user, login, logout, error }),
-        [login, logout, user, error]
+        () => ({ user, login, logout, error, status }),
+        [login, logout, user, error, isLoading, status]
     )
 
-    // if loading... spinner
+    if (isLoading || isIdle) {
+        return null
+    }
 
     // if success...
     return <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
@@ -73,7 +79,7 @@ function useAuth() {
 function useAuthClient() {
     const { user } = useAuth()
     const token = user?.accessToken
-    return React.useCallback((endpoint, data) => apiClient(endpoint, data, token), [token])
+    return React.useCallback((endpoint, data) => apiRequest(endpoint, data, token), [token])
 }
 
 export { AuthProvider, useAuth, useAuthClient }

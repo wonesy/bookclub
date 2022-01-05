@@ -2,21 +2,8 @@ import { Box, Container, Grid, Paper, Toolbar } from '@mui/material'
 import { useEffect } from 'react'
 import { ClubInfo } from '../components/ClubInfo'
 import { useAuth } from '../context/auth_context'
-import useMe from '../state/hooks/use_me'
 
 export default function Home() {
-    const auth = useAuth()
-
-    const { data } = useMe()
-
-    useEffect(() => {
-        console.log(auth.user)
-    }, [auth.user])
-
-    useEffect(() => {
-        console.log(data)
-    }, [data])
-
     return (
         <Box
             component="main"
