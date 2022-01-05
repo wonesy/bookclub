@@ -5,5 +5,8 @@ class Club(BaseModel):
     name: str
     slug: str
 
+
 class NewClub(BaseModel):
     name: str
+
+

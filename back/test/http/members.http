@@ -4,7 +4,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiL
 ###
 
 GET http://localhost:8000/members/me HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYzOTAxODEsInR5cGUiOiJhY2Nlc3MifQ.Yo8YFoRG37sbbSGtUD-3bU6-Jg8TwpRJmN6O0g3qQY0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYwODUyODYsInR5cGUiOiJhY2Nlc3MifQ.pFG8WJf1wXHF-czR1OyB985OYnAEVaveirBEWgIV_Ec
 
 ###
 
@@ -12,19 +12,16 @@ POST http://localhost:8000/members HTTP/1.1
 content-type: application/json
 
 {
-    "username": "hobbit",
-    "first_name": "Mike",
+    "username": "wonesy",
+    "first_name": "Cameron",
     "last_name": "Johson",
     "email": "test@test.com",
-    "registration_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHViIjoxLCJzdWIiOiJ3b25lc3kiLCJleHAiOjE3NDY2MjA1MDJ9.drAco3EukyUEPEG90TTFV6dsFAiXvhMS-buXVYnv8B8",
+    "registration_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbHViIjoxLCJzdWIiOiJ3b25lc3kiLCJleHAiOjE3NDk0MTUwNjV9.jqfAPbUaIGX8YTA2hYV6R2rLCqB0ed9wkFbxtINhAl8",
     "password": "pass"
 }
 
 ###
 
-PUT http://localhost:8000/members/camomile HTTP/1.1
+GET http://localhost:8000/members/foolingtook HTTP/1.1
 content-type: application/json
-
-{
-    "username": "wonesy"
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYwODUyODYsInR5cGUiOiJhY2Nlc3MifQ.pFG8WJf1wXHF-czR1OyB985OYnAEVaveirBEWgIV_Ec

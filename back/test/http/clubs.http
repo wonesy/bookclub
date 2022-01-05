@@ -1,0 +1,7 @@
+GET http://localhost:8000/clubs HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYwODUyODYsInR5cGUiOiJhY2Nlc3MifQ.pFG8WJf1wXHF-czR1OyB985OYnAEVaveirBEWgIV_Ec
+
+###
+
+GET http://localhost:8000/clubs/1 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3b25lc3kiLCJleHAiOjE2NTYwODUyODYsInR5cGUiOiJhY2Nlc3MifQ.pFG8WJf1wXHF-czR1OyB985OYnAEVaveirBEWgIV_Ec

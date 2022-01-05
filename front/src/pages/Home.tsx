@@ -1,5 +1,6 @@
 import { Box, Container, Grid, Paper, Toolbar } from '@mui/material'
 import { useEffect } from 'react'
+import { ClubInfo } from '../components/ClubInfo'
 import { useAuth } from '../context/auth_context'
 import useMe from '../state/hooks/use_me'
 
@@ -33,6 +34,10 @@ export default function Home() {
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
                     {/* Chart */}
+                    <Grid item xs={12} md={4} lg={3}>
+                        <ClubInfo />
+                    </Grid>
+                    {/* Recent Deposits */}
                     <Grid item xs={12} md={8} lg={9}>
                         <Paper
                             sx={{
@@ -42,22 +47,8 @@ export default function Home() {
                                 height: 240
                             }}
                         >
-                            {/* <Chart /> */}
-                            Chart
-                        </Paper>
-                    </Grid>
-                    {/* Recent Deposits */}
-                    <Grid item xs={12} md={4} lg={3}>
-                        <Paper
-                            sx={{
-                                p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                height: 240
-                            }}
-                        >
                             {/* <Deposits /> */}
-                            Deposits
+                            Books
                         </Paper>
                     </Grid>
                     {/* Recent Orders */}

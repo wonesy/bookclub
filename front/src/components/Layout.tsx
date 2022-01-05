@@ -175,5 +175,5 @@ export default function Layout() {
         []
     )
 
-    return <DashboardContent />
+    return user?.username ? <DashboardContent /> : null
 }

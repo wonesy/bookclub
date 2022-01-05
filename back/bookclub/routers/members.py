@@ -9,9 +9,11 @@ from jose import jwt
 from bookclub.auth.dependencies import decode_registration_token, get_token_from_header
 from bookclub.auth.password import get_password_hash
 from bookclub.models.auth import DecodedToken
+from bookclub.models.clubs import Club
 from bookclub.models.member import Member, NewMember
 from bookclub.db import database
 from bookclub.db.queries.members import GET_ALL_MEMBERS, GET_MEMBER_BY_USERNAME, INSERT_MEMBER, UPDATE_MEMBER
+from bookclub.db.queries.clubs import GET_CLUBS_BY_USERNAME
 
 logger = logging.getLogger("uvicorn.default")
 
@@ -73,18 +75,25 @@ async def create_member(new_member: NewMember):
 
 @router.get("/me")
 async def get_me(token: DecodedToken = Depends(get_token_from_header)):
-    row = await database.fetch_one(GET_MEMBER_BY_USERNAME, {"username": token.sub})
-    if row is None:
+    member = await database.fetch_one(GET_MEMBER_BY_USERNAME, {"username": token.sub})
+    if member is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No such member associated with token")
-    return Member(**row)
+
+    rows = await database.fetch_all(GET_CLUBS_BY_USERNAME, {"username": token.sub})
+    clubs = [Club(**row) for row in rows]
+
+    return Member(clubs=clubs, **member)
 
 
 @router.get("/{username}", response_model=Member)
 async def get_member_by_username(username: str, _: DecodedToken = Depends(get_token_from_header)):
-    row = await database.fetch_one(GET_MEMBER_BY_USERNAME, {"username": username})
-    if row is None:
+    member = await database.fetch_one(GET_MEMBER_BY_USERNAME, {"username": username})
+    if member is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"No such member: {username}")
-    return Member(**row)
+    rows = await database.fetch_all(GET_CLUBS_BY_USERNAME, {"username": username})
+    clubs = [Club(**row) for row in rows]
+
+    return Member(clubs=clubs, **member)
 
 
 @router.put("/{username}", response_model=Member)
